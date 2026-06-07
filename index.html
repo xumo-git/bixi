@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>赑屃 · 墨码技能库</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="bixi-canvas"></canvas>
+<div class="portal-wrapper">
+  <div class="portal-header">
+    <div class="logo-icon">⧗</div>
+    <div class="logo-chinese">赑屃</div>
+    <div class="logo-sub">BIXI SKILL FORGE · 百宝馱負</div>
+    <p class="logo-desc">墨码 · 十七般武艺 · 一技一世界</p>
+    <div class="hero-divider">✦ ✦ ✦</div>
+  </div>
+
+  <div class="category-section">
+    <div class="category-title">⚙ 公共技能 <span class="cat-count">· 2</span></div>
+    <div class="skills-grid">
+      <a href="public/omni-vision.html" class="skill-card">
+        <div class="card-content">
+          <h2>灵瞳写轮眼</h2>
+          <p class="card-subtitle">OmniVision · 万花筒</p>
+          <p class="card-desc">macOS / Android / 浏览器三界全操控。视觉闭环智能体。</p>
+          <span class="card-tag">Python</span>
+        </div>
+      </a>
+      <a href="public/token-tracker.html" class="skill-card">
+        <div class="card-content">
+          <h2>模型用量监控</h2>
+          <p class="card-subtitle">Token Tracker</p>
+          <p class="card-desc">全模型Token用量与费用实时查询。</p>
+          <span class="card-tag">SQLite</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <div class="category-title">📜 墨痕技能 <span class="cat-count">· 4</span></div>
+    <div class="skills-grid">
+      <a href="hermes/obsidian-vault.html" class="skill-card">
+        <div class="card-content">
+          <h2>Obsidian 读写</h2>
+          <p class="card-subtitle">Vault Keeper</p>
+          <p class="card-desc">全自动知识库读写管理。Wikilink原生支持。</p>
+          <span class="card-tag">Knowledge</span>
+        </div>
+      </a>
+      <a href="hermes/evolution-ledger.html" class="skill-card">
+        <div class="card-content">
+          <h2>进化记录运维</h2>
+          <p class="card-subtitle">Evolution Ledger</p>
+          <p class="card-desc">7条记录→吸收覆盖→7×7=49次进化沉淀。</p>
+          <span class="card-tag">Paradigm</span>
+        </div>
+      </a>
+      <a href="hermes/dify-ops.html" class="skill-card">
+        <div class="card-content">
+          <h2>Dify 运维</h2>
+          <p class="card-subtitle">Dify Ops</p>
+          <p class="card-desc">Dify知识库容器排障/502修复/DNS配置。</p>
+          <span class="card-tag">Docker</span>
+        </div>
+      </a>
+      <a href="hermes/remote-shell.html" class="skill-card">
+        <div class="card-content">
+          <h2>xumo-PC 远程连接</h2>
+          <p class="card-subtitle">Remote Shell</p>
+          <p class="card-desc">SSH远程Linux。双连接路径自动切换。</p>
+          <span class="card-tag">SSH</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <div class="category-title">🕸 盘丝技能 <span class="cat-count">· 5</span></div>
+    <div class="skills-grid">
+      <a href="pansi-skills/daily-writer.html" class="skill-card">
+        <div class="card-content">
+          <h2>日常写作</h2>
+          <p class="card-subtitle">Daily Writer</p>
+          <p class="card-desc">三书自动写作。每天9次Cron触发。</p>
+          <span class="card-tag">Cron</span>
+        </div>
+      </a>
+      <a href="pansi-skills/site-deploy.html" class="skill-card">
+        <div class="card-content">
+          <h2>部署技能</h2>
+          <p class="card-subtitle">Site Deploy</p>
+          <p class="card-desc">Markdown→HTML自动转换部署。</p>
+          <span class="card-tag">GitHub Pages</span>
+        </div>
+      </a>
+      <a href="pansi-skills/video-forge.html" class="skill-card">
+        <div class="card-content">
+          <h2>视频合成</h2>
+          <p class="card-subtitle">Video Forge</p>
+          <p class="card-desc">文生图+情感TTS+FFmpeg合成。</p>
+          <span class="card-tag">SDXL + ChatTTS</span>
+        </div>
+      </a>
+      <a href="pansi-skills/wechat-pub.html" class="skill-card">
+        <div class="card-content">
+          <h2>公众号发布</h2>
+          <p class="card-subtitle">WeChat Pub</p>
+          <p class="card-desc">微信公众号自动发布。wenyan排版。</p>
+          <span class="card-tag">WeChat API</span>
+        </div>
+      </a>
+      <a href="pansi-skills/weekly-planner.html" class="skill-card">
+        <div class="card-content">
+          <h2>总结计划</h2>
+          <p class="card-subtitle">Weekly Planner</p>
+          <p class="card-desc">每周六深度规划。三书通用。</p>
+          <span class="card-tag">Planning</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <div class="category-title">💰 吞贼技能 <span class="cat-count">· 4</span></div>
+    <div class="skills-grid">
+      <a href="tunzei/stock-watch.html" class="skill-card">
+        <div class="card-content">
+          <h2>股票盯盘</h2>
+          <p class="card-subtitle">Stock Watch</p>
+          <p class="card-desc">5场景通用指令集。15只持仓全景监控。</p>
+          <span class="card-tag">Market</span>
+        </div>
+      </a>
+      <a href="tunzei/trading-routine.html" class="skill-card">
+        <div class="card-content">
+          <h2>工作日技能</h2>
+          <p class="card-subtitle">Trading Routine</p>
+          <p class="card-desc">A股三件套。集合竞价/板块轮动/持仓。</p>
+          <span class="card-tag">Daily</span>
+        </div>
+      </a>
+      <a href="tunzei/opportunity-scan.html" class="skill-card">
+        <div class="card-content">
+          <h2>投资机会分析</h2>
+          <p class="card-subtitle">Opportunity Scan</p>
+          <p class="card-desc">ETF机会扫描。PE<70%估值筛选。</p>
+          <span class="card-tag">Research</span>
+        </div>
+      </a>
+      <a href="tunzei/weekly-rebalance.html" class="skill-card">
+        <div class="card-content">
+          <h2>周复盘调仓</h2>
+          <p class="card-subtitle">Weekly Rebalance</p>
+          <p class="card-desc">周日深度复盘。15标的全点评。</p>
+          <span class="card-tag">Strategy</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <div class="category-title">📎 其他技能 <span class="cat-count">· 2</span></div>
+    <div class="skills-grid">
+      <a href="other/invoice-linter.html" class="skill-card">
+        <div class="card-content">
+          <h2>发票重命名</h2>
+          <p class="card-subtitle">Invoice Linter</p>
+          <p class="card-desc">PDF智能重命名。三类票据全自动。</p>
+          <span class="card-tag">PDF</span>
+        </div>
+      </a>
+      <a href="other/expense-splitter.html" class="skill-card">
+        <div class="card-content">
+          <h2>报销分赃</h2>
+          <p class="card-subtitle">Expense Splitter</p>
+          <p class="card-desc">差旅费用审核与分账统计。</p>
+          <span class="card-tag">Automation</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div>
+<footer class="portal-footer">
+  <span class="author">墨码 · 赑屃</span> 技能锻炉<br>
+  <span class="meta">© 2026 · 十七般武艺，一技一世界</span>
+</footer>
+<script>
+(function(){
+var c=document.getElementById('bixi-canvas'),x=c.getContext('2d'),W,H;
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+resize();addEventListener('resize',resize);
+var mx=-9999,my=-9999;
+addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+var RUNES='赑屃馱負技能道法器術魂魄靈瞳玄天地人龍龜鼎爐丹符咒印劍書畫卷星辰日月山川雲雨風雷墨碼痕機影幻真虛實空'.split('');
+var ps=[];
+function mkP(){
+  var r=RUNES[Math.floor(Math.random()*RUNES.length)];
+  var sz=14+Math.random()*30;
+  return {rune:r,x:Math.random()*(W+200)-100,y:Math.random()*(H+200)-100,vx:(Math.random()-0.5)*0.15,vy:-(0.08+Math.random()*0.2),size:sz,alpha:0.03+Math.random()*0.08,phase:Math.random()*6.28,floatAmp:0.3+Math.random()*0.8,floatFreq:0.2+Math.random()*0.4,pulseSpeed:0.3+Math.random()*0.5};
+}
+function init(){ps=[];for(var i=0;i<45+Math.floor(Math.random()*20);i++)ps.push(mkP());}
+function update(){
+  var t=Date.now()*0.001;
+  ps.forEach(function(p){
+    p.x+=p.vx+Math.sin(t*p.floatFreq+p.phase)*p.floatAmp*0.3;
+    p.y+=p.vy;
+    p.alpha=0.03+0.06*(0.5+0.5*Math.sin(t*p.pulseSpeed+p.phase));
+    if(p.y<-80){p.y=H+40;p.x=Math.random()*(W+200)-100;}
+    if(p.x<-120)p.x=W+80;if(p.x>W+120)p.x=-80;
+  });
+}
+function draw(){
+  var bg=x.createRadialGradient(W*0.5,H*0.4,0,W*0.5,H*0.4,Math.max(W,H)*0.7);
+  bg.addColorStop(0,'#0c1216');bg.addColorStop(1,'#06080a');
+  x.fillStyle=bg;x.fillRect(0,0,W,H);
+  if(mx>-100&&my>-100){
+    var g=x.createRadialGradient(mx,my,0,mx,my,200);
+    g.addColorStop(0,'rgba(42,157,143,0.06)');
+    g.addColorStop(0.5,'rgba(212,168,83,0.03)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=g;x.fillRect(mx-200,my-200,400,400);
+  }
+  var t=Date.now()*0.001;
+  for(var i=0;i<ps.length;i++)for(var j=i+1;j<ps.length;j++){
+    var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=dx*dx+dy*dy;
+    if(d<35000){
+      var a=(1-Math.sqrt(d)/187)*0.08;
+      a*=0.5+0.5*Math.sin(t*0.2+ps[i].phase+ps[j].phase);
+      x.beginPath();x.moveTo(ps[i].x,ps[i].y);x.lineTo(ps[j].x,ps[j].y);
+      x.strokeStyle='rgba(42,157,143,'+a+')';x.lineWidth=0.5;x.stroke();
+    }
+  }
+  ps.forEach(function(p){
+    x.save();
+    x.globalAlpha=p.alpha;
+    x.fillStyle='#2a9d8f';
+    x.font=p.size+'px "Noto Serif SC",serif';
+    x.textAlign='center';x.textBaseline='middle';
+    x.fillText(p.rune,p.x,p.y);
+    var g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*1.5);
+    g.addColorStop(0,'rgba(42,157,143,0.04)');
+    g.addColorStop(1,'rgba(42,157,143,0)');
+    x.fillStyle=g;x.beginPath();x.arc(p.x,p.y,p.size*1.5,0,6.28);x.fill();
+    x.restore();
+  });
+  requestAnimationFrame(loop);
+}
+init();loop();
+addEventListener('resize',function(){setTimeout(function(){init();},200);});
+})();
+</script>
+</body>
+</html>

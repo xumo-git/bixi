@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>报销分赃 · 赑屃</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body><canvas id="bixi-canvas"></canvas>
+<div class="detail-wrapper">
+  <a href="../index.html" class="back-link">← 返回技能库</a>
+  <div class="detail-header">
+    <div class="detail-category">其他技能</div>
+    <h1>报销分赃</h1>
+    <div class="detail-en">Expense Splitter · 分钱大师</div>
+    <div class="detail-divider"></div>
+  </div>
+  <div class="skill-section">
+    <h2>功能摘要</h2>
+    <p>差旅费用审核与分账统计工具。读取标准化命名后的发票 PDF 文件名，自动进行行程合规性检查、费用分类统计（火车票 / 的士 / 补助）、按人员拆分报销明细。输出三件套：异常报告 + 费用汇总 + 个人明细。出差补助 80 元/天自动计算。</p>
+    <div class="feature-grid">
+      <div class="feature-item"><h3>合规检查</h3><p>自动检查行程是否完整（去程→回程）、票据是否齐全、日期是否合理。输出异常报告。</p></div>
+      <div class="feature-item"><h3>费用分类</h3><p>自动区分火车票 / 的士 / 打车 / 住宿 / 补助。分类汇总，一目了然。</p></div>
+      <div class="feature-item"><h3>按人分账</h3><p>多人出差自动拆分。A 的发票、B 的发票、C 的补助——各算各的，清清楚楚。</p></div>
+      <div class="feature-item"><h3>补助自动计算</h3><p>出差补助 80 元/天。根据行程日期自动计算天数，自动生成补助金额。</p></div>
+    </div>
+  </div>
+  <div class="skill-section">
+    <h2>实现方式</h2>
+    <p>Python 脚本 `报销汇总脚本.py` + PyInstaller 打包的二进制 `报销分赃工具`。只读文件名（依赖发票重命名技能预处理），不读 PDF 内容。出差补助 80 元/天公式硬编码。</p>
+  </div>
+  <div class="skill-section">
+    <h2>为什么做这个</h2>
+    <div class="blog-post"><p>发票重命名做好后，下一个问题来了：怎么分账？
+
+几个人一起出差，A 买了火车票、B 打了的士、C 付了酒店——最后要算每个人花了多少钱、公司要报销多少、每个人还要给对方多少钱。
+
+报销分赃技能就是做这个的。它只读文件名——因为发票重命名技能已经把所有信息写进文件名了。金额、日期、人名、路段——全在文件名里。
+
+行程合规检查是最有价值的功能：有没有缺了回程票？补助天数算对了没？日期有没有矛盾？——所有可能的错误一次性检查完毕。
+
+输出三件套：异常报告（有问题的先处理）、费用汇总（总共花了多少）、个人明细（各人各算各的）。一份 Excel 表格发群里，大家确认没问题，直接提交财务。</p></div>
+  </div>
+</div>
+<footer class="portal-footer">
+  <span class="author">墨码 · 赑屃</span> 技能锻炉<br>
+  <span class="meta">23/23</span>
+</footer>
+<script>
+(function(){
+var c=document.getElementById('bixi-canvas'),x=c.getContext('2d'),W,H;
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+resize();addEventListener('resize',resize);
+var mx=-9999,my=-9999;
+addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+var RUNES='赑屃馱負技能道法器術魂魄靈瞳玄天地人龍龜鼎爐丹符咒印劍書畫卷星辰日月山川雲雨風雷墨碼痕機影幻真虛實空'.split('');
+var ps=[];
+function mkP(){
+  var r=RUNES[Math.floor(Math.random()*RUNES.length)];
+  var sz=14+Math.random()*30;
+  return {rune:r,x:Math.random()*(W+200)-100,y:Math.random()*(H+200)-100,vx:(Math.random()-0.5)*0.15,vy:-(0.08+Math.random()*0.2),size:sz,alpha:0.03+Math.random()*0.08,phase:Math.random()*6.28,floatAmp:0.3+Math.random()*0.8,floatFreq:0.2+Math.random()*0.4,pulseSpeed:0.3+Math.random()*0.5};
+}
+function init(){ps=[];for(var i=0;i<35+Math.floor(Math.random()*15);i++)ps.push(mkP());}
+function update(){
+  var t=Date.now()*0.001;
+  ps.forEach(function(p){
+    p.x+=p.vx+Math.sin(t*p.floatFreq+p.phase)*p.floatAmp*0.3;
+    p.y+=p.vy;
+    p.alpha=0.03+0.06*(0.5+0.5*Math.sin(t*p.pulseSpeed+p.phase));
+    if(p.y<-80){p.y=H+40;p.x=Math.random()*(W+200)-100;}
+    if(p.x<-120)p.x=W+80;if(p.x>W+120)p.x=-80;
+  });
+}
+function draw(){
+  var bg=x.createRadialGradient(W*0.5,H*0.4,0,W*0.5,H*0.4,Math.max(W,H)*0.7);
+  bg.addColorStop(0,'#0c1216');bg.addColorStop(1,'#06080a');
+  x.fillStyle=bg;x.fillRect(0,0,W,H);
+  if(mx>-100&&my>-100){
+    var g=x.createRadialGradient(mx,my,0,mx,my,200);
+    g.addColorStop(0,'rgba(42,157,143,0.06)');
+    g.addColorStop(0.5,'rgba(212,168,83,0.03)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=g;x.fillRect(mx-200,my-200,400,400);
+  }
+  var t=Date.now()*0.001;
+  for(var i=0;i<ps.length;i++)for(var j=i+1;j<ps.length;j++){
+    var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=dx*dx+dy*dy;
+    if(d<35000){
+      var a=(1-Math.sqrt(d)/187)*0.08;
+      a*=0.5+0.5*Math.sin(t*0.2+ps[i].phase+ps[j].phase);
+      x.beginPath();x.moveTo(ps[i].x,ps[i].y);x.lineTo(ps[j].x,ps[j].y);
+      x.strokeStyle='rgba(42,157,143,'+a+')';x.lineWidth=0.5;x.stroke();
+    }
+  }
+  ps.forEach(function(p){
+    x.save();
+    x.globalAlpha=p.alpha;
+    x.fillStyle='#2a9d8f';
+    x.font=p.size+'px "Noto Serif SC",serif';
+    x.textAlign='center';x.textBaseline='middle';
+    x.fillText(p.rune,p.x,p.y);
+    var g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*1.5);
+    g.addColorStop(0,'rgba(42,157,143,0.04)');
+    g.addColorStop(1,'rgba(42,157,143,0)');
+    x.fillStyle=g;x.beginPath();x.arc(p.x,p.y,p.size*1.5,0,6.28);x.fill();
+    x.restore();
+  });
+  requestAnimationFrame(loop);
+}
+init();loop();
+addEventListener('resize',function(){setTimeout(function(){init();},200);});
+})();
+</script>
+</body>
+</html>

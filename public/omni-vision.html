@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>灵瞳写轮眼 · 赑屃</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body><canvas id="bixi-canvas"></canvas>
+<div class="detail-wrapper">
+  <a href="../index.html" class="back-link">← 返回技能库</a>
+  <div class="detail-header">
+    <div class="detail-category">公共技能</div>
+    <h1>灵瞳写轮眼</h1>
+    <div class="detail-en">OmniVision · 万花筒</div>
+    <div class="detail-divider"></div>
+  </div>
+  <div class="skill-section">
+    <h2>功能摘要</h2>
+    <p>灵瞳写轮眼是墨码的「眼睛和手」——一套跨平台的桌面自动化引擎，集 macOS 原生操控、Android ADB 控制、Playwright 浏览器驱动、VLM 视觉闭环于一身。它让 AI 不再是盲人摸象，而是能看见屏幕、理解界面、精准操作的全能数字体。</p>
+    <div class="feature-grid">
+      <div class="feature-item"><h3>macOS 原生操控</h3><p>11 种桌面动作：click / drag / scroll / type / hotkey / menu / app_launch / app_kill / window_focus / screenshot / clipboard。支持 Accessibility API 和 CAEvent 双路径输入。</p></div>
+      <div class="feature-item"><h3>VLM 视觉闭环</h3><p>截图→VLM分析→决策→执行→再截图。利用 Qwen3-VL / GPT-4o 等视觉模型，实现「看屏幕→理解→操作→验证」的完整闭环。</p></div>
+      <div class="feature-item"><h3>Android 移动操控</h3><p>通过 ADB 连接 Android 设备，支持 tap / swipe / type / screenshot / app_launch。从电脑控制手机，全自动化测试与操作。</p></div>
+      <div class="feature-item"><h3>Playwright 浏览器</h3><p>基于 Playwright 的浏览器自动化。页面导航 / 点击 / 表单填写 / 内容抓取 / 截图，Web 端全能操控。</p></div>
+    </div>
+  </div>
+  <div class="skill-section">
+    <h2>实现方式</h2>
+    <p>Python 模块化架构。`action_executor.py` 统一调度四算子（macOS / ADB / Playwright / VLM），`vlm_agent.py` 对接硅基流动等视觉模型 API，`adb_operator.py` 封装 Android 调试桥命令，`browser_operator.py` 提供 Playwright 高级接口。入口 `lingtong.sh` Shell 脚本提供终端 CLI。配套 `test_*.py` 验证各算子可靠性。</p>
+  </div>
+  <div class="skill-section">
+    <h2>为什么做这个</h2>
+    <div class="blog-post"><p>灵瞳写轮眼的诞生源于一个朴素的痛点：AI 能写代码、能聊天、能推理，但「看不见屏幕」。当需要操作一个 GUI 应用、填写一个网页表单、或者从手机屏幕上抓取数据时，AI 像个盲人——只能靠猜。
+
+万花筒 v2 版本将四个「写轮眼」合而为一：macOS 原生、Android ADB、Playwright 浏览器、VLM 视觉。每次操作都是看→想→做→检查的闭环。
+
+最得意的场景：东方财富 App 的股票数据抓取。灵瞳通过 ADB 操控手机屏幕，截图传给 Qwen3-VL 分析，提取板块涨幅、持仓估值——整个过程全自动，比手动翻手机快 10 倍。</p></div>
+  </div>
+</div>
+<footer class="portal-footer">
+  <span class="author">墨码 · 赑屃</span> 技能锻炉<br>
+  <span class="meta">01/23</span>
+</footer>
+<script>
+(function(){
+var c=document.getElementById('bixi-canvas'),x=c.getContext('2d'),W,H;
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+resize();addEventListener('resize',resize);
+var mx=-9999,my=-9999;
+addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+var RUNES='赑屃馱負技能道法器術魂魄靈瞳玄天地人龍龜鼎爐丹符咒印劍書畫卷星辰日月山川雲雨風雷墨碼痕機影幻真虛實空'.split('');
+var ps=[];
+function mkP(){
+  var r=RUNES[Math.floor(Math.random()*RUNES.length)];
+  var sz=14+Math.random()*30;
+  return {rune:r,x:Math.random()*(W+200)-100,y:Math.random()*(H+200)-100,vx:(Math.random()-0.5)*0.15,vy:-(0.08+Math.random()*0.2),size:sz,alpha:0.03+Math.random()*0.08,phase:Math.random()*6.28,floatAmp:0.3+Math.random()*0.8,floatFreq:0.2+Math.random()*0.4,pulseSpeed:0.3+Math.random()*0.5};
+}
+function init(){ps=[];for(var i=0;i<35+Math.floor(Math.random()*15);i++)ps.push(mkP());}
+function update(){
+  var t=Date.now()*0.001;
+  ps.forEach(function(p){
+    p.x+=p.vx+Math.sin(t*p.floatFreq+p.phase)*p.floatAmp*0.3;
+    p.y+=p.vy;
+    p.alpha=0.03+0.06*(0.5+0.5*Math.sin(t*p.pulseSpeed+p.phase));
+    if(p.y<-80){p.y=H+40;p.x=Math.random()*(W+200)-100;}
+    if(p.x<-120)p.x=W+80;if(p.x>W+120)p.x=-80;
+  });
+}
+function draw(){
+  var bg=x.createRadialGradient(W*0.5,H*0.4,0,W*0.5,H*0.4,Math.max(W,H)*0.7);
+  bg.addColorStop(0,'#0c1216');bg.addColorStop(1,'#06080a');
+  x.fillStyle=bg;x.fillRect(0,0,W,H);
+  if(mx>-100&&my>-100){
+    var g=x.createRadialGradient(mx,my,0,mx,my,200);
+    g.addColorStop(0,'rgba(42,157,143,0.06)');
+    g.addColorStop(0.5,'rgba(212,168,83,0.03)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=g;x.fillRect(mx-200,my-200,400,400);
+  }
+  var t=Date.now()*0.001;
+  for(var i=0;i<ps.length;i++)for(var j=i+1;j<ps.length;j++){
+    var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=dx*dx+dy*dy;
+    if(d<35000){
+      var a=(1-Math.sqrt(d)/187)*0.08;
+      a*=0.5+0.5*Math.sin(t*0.2+ps[i].phase+ps[j].phase);
+      x.beginPath();x.moveTo(ps[i].x,ps[i].y);x.lineTo(ps[j].x,ps[j].y);
+      x.strokeStyle='rgba(42,157,143,'+a+')';x.lineWidth=0.5;x.stroke();
+    }
+  }
+  ps.forEach(function(p){
+    x.save();
+    x.globalAlpha=p.alpha;
+    x.fillStyle='#2a9d8f';
+    x.font=p.size+'px "Noto Serif SC",serif';
+    x.textAlign='center';x.textBaseline='middle';
+    x.fillText(p.rune,p.x,p.y);
+    var g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*1.5);
+    g.addColorStop(0,'rgba(42,157,143,0.04)');
+    g.addColorStop(1,'rgba(42,157,143,0)');
+    x.fillStyle=g;x.beginPath();x.arc(p.x,p.y,p.size*1.5,0,6.28);x.fill();
+    x.restore();
+  });
+  requestAnimationFrame(loop);
+}
+init();loop();
+addEventListener('resize',function(){setTimeout(function(){init();},200);});
+})();
+</script>
+</body>
+</html>

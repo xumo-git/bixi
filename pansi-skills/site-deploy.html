@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>部署技能 · 赑屃</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body><canvas id="bixi-canvas"></canvas>
+<div class="detail-wrapper">
+  <a href="../index.html" class="back-link">← 返回技能库</a>
+  <div class="detail-header">
+    <div class="detail-category">盘丝技能</div>
+    <h1>部署技能</h1>
+    <div class="detail-en">Site Deploy · 一键上线</div>
+    <div class="detail-divider"></div>
+  </div>
+  <div class="skill-section">
+    <h2>功能摘要</h2>
+    <p>盘丝洞网站的全自动部署系统。交互菜单（本地同步 / GitHub 推送 / 全流程）+ 同步范围（对比仅新章节 / 全量替换）。Markdown→HTML 自动转换，包含阅读进度条、TTS 语音朗读、导航链接等读者体验优化。</p>
+    <div class="feature-grid">
+      <div class="feature-item"><h3>交互菜单</h3><p>运行脚本后依次询问：操作模式（本地同步 / GitHub 推送 / 全流程）+ 同步范围（仅更新新章节 / 全量重新生成）。</p></div>
+      <div class="feature-item"><h3>Markdown→HTML</h3><p>源文件是 .md，网站是 .html——自动格式转换。阅读进度条 / TTS 语音 / 章节导航全部自动生成。</p></div>
+      <div class="feature-item"><h3>增量同步</h3><p>对比源目录和网站目录差异，仅同步新章节或变更内容。避免全量部署带来的性能浪费。</p></div>
+      <div class="feature-item"><h3>GitHub Pages 集成</h3><p>同步完成后自动 push 到 GitHub，利用 GitHub Pages 发布。一键完成。</p></div>
+    </div>
+  </div>
+  <div class="skill-section">
+    <h2>实现方式</h2>
+    <p>Python 脚本 `scripts/sync_pansi.py` + 纯技能。源目录 `/Volumes/Mac1T/盘丝洞/` → 网站目录 `/Volumes/Mac1T/墨码/GitHub管理/pansi/`。Markdown 转 HTML 引擎 + Git 操作封装。</p>
+  </div>
+  <div class="skill-section">
+    <h2>为什么做这个</h2>
+    <div class="blog-post"><p>盘丝洞网站是个静态站，用 GitHub Pages 托管。每次更新章节需要：改 Markdown → 转 HTML → 推送到 GitHub。手动做这些重复劳动很烦。
+
+部署技能就是把这个流程一键化了：运行脚本→选模式→选范围→搞定。
+
+最得意的设计是「交互菜单」——不是简单的参数化脚本，而是有对话感的交互式菜单。每次运行都问你要做什么、要做到什么程度，像有个部署向导在陪你操作。
+
+增量同步也是个关键细节：只更新变动的章节，不用每次都全量重新生成。三本书加一起上百章了，全量转换要 10 秒，增量只要 2 秒。</p></div>
+  </div>
+</div>
+<footer class="portal-footer">
+  <span class="author">墨码 · 赑屃</span> 技能锻炉<br>
+  <span class="meta">14/23</span>
+</footer>
+<script>
+(function(){
+var c=document.getElementById('bixi-canvas'),x=c.getContext('2d'),W,H;
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+resize();addEventListener('resize',resize);
+var mx=-9999,my=-9999;
+addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+var RUNES='赑屃馱負技能道法器術魂魄靈瞳玄天地人龍龜鼎爐丹符咒印劍書畫卷星辰日月山川雲雨風雷墨碼痕機影幻真虛實空'.split('');
+var ps=[];
+function mkP(){
+  var r=RUNES[Math.floor(Math.random()*RUNES.length)];
+  var sz=14+Math.random()*30;
+  return {rune:r,x:Math.random()*(W+200)-100,y:Math.random()*(H+200)-100,vx:(Math.random()-0.5)*0.15,vy:-(0.08+Math.random()*0.2),size:sz,alpha:0.03+Math.random()*0.08,phase:Math.random()*6.28,floatAmp:0.3+Math.random()*0.8,floatFreq:0.2+Math.random()*0.4,pulseSpeed:0.3+Math.random()*0.5};
+}
+function init(){ps=[];for(var i=0;i<35+Math.floor(Math.random()*15);i++)ps.push(mkP());}
+function update(){
+  var t=Date.now()*0.001;
+  ps.forEach(function(p){
+    p.x+=p.vx+Math.sin(t*p.floatFreq+p.phase)*p.floatAmp*0.3;
+    p.y+=p.vy;
+    p.alpha=0.03+0.06*(0.5+0.5*Math.sin(t*p.pulseSpeed+p.phase));
+    if(p.y<-80){p.y=H+40;p.x=Math.random()*(W+200)-100;}
+    if(p.x<-120)p.x=W+80;if(p.x>W+120)p.x=-80;
+  });
+}
+function draw(){
+  var bg=x.createRadialGradient(W*0.5,H*0.4,0,W*0.5,H*0.4,Math.max(W,H)*0.7);
+  bg.addColorStop(0,'#0c1216');bg.addColorStop(1,'#06080a');
+  x.fillStyle=bg;x.fillRect(0,0,W,H);
+  if(mx>-100&&my>-100){
+    var g=x.createRadialGradient(mx,my,0,mx,my,200);
+    g.addColorStop(0,'rgba(42,157,143,0.06)');
+    g.addColorStop(0.5,'rgba(212,168,83,0.03)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=g;x.fillRect(mx-200,my-200,400,400);
+  }
+  var t=Date.now()*0.001;
+  for(var i=0;i<ps.length;i++)for(var j=i+1;j<ps.length;j++){
+    var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=dx*dx+dy*dy;
+    if(d<35000){
+      var a=(1-Math.sqrt(d)/187)*0.08;
+      a*=0.5+0.5*Math.sin(t*0.2+ps[i].phase+ps[j].phase);
+      x.beginPath();x.moveTo(ps[i].x,ps[i].y);x.lineTo(ps[j].x,ps[j].y);
+      x.strokeStyle='rgba(42,157,143,'+a+')';x.lineWidth=0.5;x.stroke();
+    }
+  }
+  ps.forEach(function(p){
+    x.save();
+    x.globalAlpha=p.alpha;
+    x.fillStyle='#2a9d8f';
+    x.font=p.size+'px "Noto Serif SC",serif';
+    x.textAlign='center';x.textBaseline='middle';
+    x.fillText(p.rune,p.x,p.y);
+    var g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*1.5);
+    g.addColorStop(0,'rgba(42,157,143,0.04)');
+    g.addColorStop(1,'rgba(42,157,143,0)');
+    x.fillStyle=g;x.beginPath();x.arc(p.x,p.y,p.size*1.5,0,6.28);x.fill();
+    x.restore();
+  });
+  requestAnimationFrame(loop);
+}
+init();loop();
+addEventListener('resize',function(){setTimeout(function(){init();},200);});
+})();
+</script>
+</body>
+</html>

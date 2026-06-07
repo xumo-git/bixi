@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>视频合成 · 赑屃</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body><canvas id="bixi-canvas"></canvas>
+<div class="detail-wrapper">
+  <a href="../index.html" class="back-link">← 返回技能库</a>
+  <div class="detail-header">
+    <div class="detail-category">盘丝技能</div>
+    <h1>视频合成</h1>
+    <div class="detail-en">Video Forge · 文生视频</div>
+    <div class="detail-divider"></div>
+  </div>
+  <div class="skill-section">
+    <h2>功能摘要</h2>
+    <p>小说剧本→竖屏短视频的全自动流水线。文生图（本地 SDXL API）+ 情感 TTS（ChatTTS）+ FFmpeg 合成三合一。支持多种情绪语音和古风/现代/仙侠提示词模板。小说段落直接变成短视频。</p>
+    <div class="feature-grid">
+      <div class="feature-item"><h3>文生图</h3><p>本地 SDXL API（:8189）根据剧本内容自动生成配图。古风/现代/仙侠多风格提示词模板，画面与内容风格一致。</p></div>
+      <div class="feature-item"><h3>情感 TTS</h3><p>ChatTTS（:19527）生成情感语音朗读。喜怒哀乐多种情绪语音可选，小说对白的角色感拉满。</p></div>
+      <div class="feature-item"><h3>FFmpeg 合成</h3><p>图片 + 语音 + 字幕 → 竖屏短视频。FFmpeg 自动合成，输出抖音/视频号格式。</p></div>
+      <div class="feature-item"><h3>OpenAI 兼容 API</h3><p>文生图服务兼容 OpenAI API 格式。任意 OpenAI 客户端可直接调用本地 SDXL 能力。</p></div>
+    </div>
+  </div>
+  <div class="skill-section">
+    <h2>实现方式</h2>
+    <p>Python 服务模块：`servers/image_server.py`（文生图，OpenAI 兼容 API，端口 8189），`tts_server.py`（ChatTTS 情感语音，端口 19527），`compose_video.py` + `make_video.py`（FFmpeg 合成）。</p>
+  </div>
+  <div class="skill-section">
+    <h2>为什么做这个</h2>
+    <div class="blog-post"><p>小说写好了，怎么让它「动起来」？
+
+视频合成技能是盘丝洞的「影视化」尝试：把每一章小说段落变成一条短视频。文生图做画面，ChatTTS 做语音朗读，FFmpeg 做最终合成。
+
+全本地运行——SDXL 跑在本地 GPU 上，ChatTTS 也是本地服务。不需要第三方 API，没有按次付费的压力。
+
+最让我激动的是「情感 TTS」：ChatTTS 能生成带情绪的语音，高兴时语调上扬，悲伤时语速放慢。小说里的对白有了真实的「语气」，读者体验完全不同。</p></div>
+  </div>
+</div>
+<footer class="portal-footer">
+  <span class="author">墨码 · 赑屃</span> 技能锻炉<br>
+  <span class="meta">15/23</span>
+</footer>
+<script>
+(function(){
+var c=document.getElementById('bixi-canvas'),x=c.getContext('2d'),W,H;
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+resize();addEventListener('resize',resize);
+var mx=-9999,my=-9999;
+addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+var RUNES='赑屃馱負技能道法器術魂魄靈瞳玄天地人龍龜鼎爐丹符咒印劍書畫卷星辰日月山川雲雨風雷墨碼痕機影幻真虛實空'.split('');
+var ps=[];
+function mkP(){
+  var r=RUNES[Math.floor(Math.random()*RUNES.length)];
+  var sz=14+Math.random()*30;
+  return {rune:r,x:Math.random()*(W+200)-100,y:Math.random()*(H+200)-100,vx:(Math.random()-0.5)*0.15,vy:-(0.08+Math.random()*0.2),size:sz,alpha:0.03+Math.random()*0.08,phase:Math.random()*6.28,floatAmp:0.3+Math.random()*0.8,floatFreq:0.2+Math.random()*0.4,pulseSpeed:0.3+Math.random()*0.5};
+}
+function init(){ps=[];for(var i=0;i<35+Math.floor(Math.random()*15);i++)ps.push(mkP());}
+function update(){
+  var t=Date.now()*0.001;
+  ps.forEach(function(p){
+    p.x+=p.vx+Math.sin(t*p.floatFreq+p.phase)*p.floatAmp*0.3;
+    p.y+=p.vy;
+    p.alpha=0.03+0.06*(0.5+0.5*Math.sin(t*p.pulseSpeed+p.phase));
+    if(p.y<-80){p.y=H+40;p.x=Math.random()*(W+200)-100;}
+    if(p.x<-120)p.x=W+80;if(p.x>W+120)p.x=-80;
+  });
+}
+function draw(){
+  var bg=x.createRadialGradient(W*0.5,H*0.4,0,W*0.5,H*0.4,Math.max(W,H)*0.7);
+  bg.addColorStop(0,'#0c1216');bg.addColorStop(1,'#06080a');
+  x.fillStyle=bg;x.fillRect(0,0,W,H);
+  if(mx>-100&&my>-100){
+    var g=x.createRadialGradient(mx,my,0,mx,my,200);
+    g.addColorStop(0,'rgba(42,157,143,0.06)');
+    g.addColorStop(0.5,'rgba(212,168,83,0.03)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=g;x.fillRect(mx-200,my-200,400,400);
+  }
+  var t=Date.now()*0.001;
+  for(var i=0;i<ps.length;i++)for(var j=i+1;j<ps.length;j++){
+    var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=dx*dx+dy*dy;
+    if(d<35000){
+      var a=(1-Math.sqrt(d)/187)*0.08;
+      a*=0.5+0.5*Math.sin(t*0.2+ps[i].phase+ps[j].phase);
+      x.beginPath();x.moveTo(ps[i].x,ps[i].y);x.lineTo(ps[j].x,ps[j].y);
+      x.strokeStyle='rgba(42,157,143,'+a+')';x.lineWidth=0.5;x.stroke();
+    }
+  }
+  ps.forEach(function(p){
+    x.save();
+    x.globalAlpha=p.alpha;
+    x.fillStyle='#2a9d8f';
+    x.font=p.size+'px "Noto Serif SC",serif';
+    x.textAlign='center';x.textBaseline='middle';
+    x.fillText(p.rune,p.x,p.y);
+    var g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*1.5);
+    g.addColorStop(0,'rgba(42,157,143,0.04)');
+    g.addColorStop(1,'rgba(42,157,143,0)');
+    x.fillStyle=g;x.beginPath();x.arc(p.x,p.y,p.size*1.5,0,6.28);x.fill();
+    x.restore();
+  });
+  requestAnimationFrame(loop);
+}
+init();loop();
+addEventListener('resize',function(){setTimeout(function(){init();},200);});
+})();
+</script>
+</body>
+</html>

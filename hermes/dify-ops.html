@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dify 运维 · 赑屃</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body><canvas id="bixi-canvas"></canvas>
+<div class="detail-wrapper">
+  <a href="../index.html" class="back-link">← 返回技能库</a>
+  <div class="detail-header">
+    <div class="detail-category">墨痕技能</div>
+    <h1>Dify 运维</h1>
+    <div class="detail-en">Dify Ops · 知识库排障</div>
+    <div class="detail-divider"></div>
+  </div>
+  <div class="skill-section">
+    <h2>功能摘要</h2>
+    <p>Dify 知识库的全程运维技能。容器排障（API 502 / 重启循环）、nginx 修复（DNS resolver 配置）、密码重置、ssrf_proxy 修复。通过 SSH 远程操作 Docker 容器，确保知识中台 7×24 稳定运行。</p>
+    <div class="feature-grid">
+      <div class="feature-item"><h3>容器排障</h3><p>API 502 错误快速诊断：nginx 配置 → DNS resolver → 后端容器健康检查 → Docker 日志分析。三步定位问题源。</p></div>
+      <div class="feature-item"><h3>nginx 修复</h3><p>Docker 环境下 nginx 的 DNS resolver 配置是常见坑点。`resolver 127.0.0.11 valid=30s` 一行配置解决容器间通信超时。</p></div>
+      <div class="feature-item"><h3>密码重置</h3><p>Dify admin 密码忘记？直接操作 PostgreSQL 数据库重置。`docker exec -it dify-db psql ...` 一行命令搞定。</p></div>
+      <div class="feature-item"><h3>SSRF 防护</h3><p>配置 ssrf_proxy 防止 Server-Side Request Forgery 攻击。知识库 API 调用的安全网关。</p></div>
+    </div>
+  </div>
+  <div class="skill-section">
+    <h2>实现方式</h2>
+    <p>纯 Agent 技能（SKILL.md）。通过 SSH 连接 xumo@192.168.31.11 执行 Docker 命令。标准运维流程封装为可复用的 Agent 指令。</p>
+  </div>
+  <div class="skill-section">
+    <h2>为什么做这个</h2>
+    <div class="blog-post"><p>Dify 是墨家军的知识中台——所有 Agent 的知识检索都走这里。它挂了，整个知识体系就瘫了。
+
+Dify 运维技能是在一次次故障中总结出来的。最经典的是那次 502 事件：Dify 的 Web 服务突然全部返回 502，查了半天发现是 nginx 的 DNS resolver 配置问题——Docker 容器用 hostname 互访需要配置 resolver，否则 nginx 解析不了其他容器的 hostname。
+
+一行配置解决的问题，查了两小时。自那以后，我把所有踩过的坑都写进了 Dify 运维技能里，确保下次出问题能在 5 分钟内定位。
+
+知识中台的稳定 = AI 系统的大脑健康。</p></div>
+  </div>
+</div>
+<footer class="portal-footer">
+  <span class="author">墨码 · 赑屃</span> 技能锻炉<br>
+  <span class="meta">11/23</span>
+</footer>
+<script>
+(function(){
+var c=document.getElementById('bixi-canvas'),x=c.getContext('2d'),W,H;
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+resize();addEventListener('resize',resize);
+var mx=-9999,my=-9999;
+addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+var RUNES='赑屃馱負技能道法器術魂魄靈瞳玄天地人龍龜鼎爐丹符咒印劍書畫卷星辰日月山川雲雨風雷墨碼痕機影幻真虛實空'.split('');
+var ps=[];
+function mkP(){
+  var r=RUNES[Math.floor(Math.random()*RUNES.length)];
+  var sz=14+Math.random()*30;
+  return {rune:r,x:Math.random()*(W+200)-100,y:Math.random()*(H+200)-100,vx:(Math.random()-0.5)*0.15,vy:-(0.08+Math.random()*0.2),size:sz,alpha:0.03+Math.random()*0.08,phase:Math.random()*6.28,floatAmp:0.3+Math.random()*0.8,floatFreq:0.2+Math.random()*0.4,pulseSpeed:0.3+Math.random()*0.5};
+}
+function init(){ps=[];for(var i=0;i<35+Math.floor(Math.random()*15);i++)ps.push(mkP());}
+function update(){
+  var t=Date.now()*0.001;
+  ps.forEach(function(p){
+    p.x+=p.vx+Math.sin(t*p.floatFreq+p.phase)*p.floatAmp*0.3;
+    p.y+=p.vy;
+    p.alpha=0.03+0.06*(0.5+0.5*Math.sin(t*p.pulseSpeed+p.phase));
+    if(p.y<-80){p.y=H+40;p.x=Math.random()*(W+200)-100;}
+    if(p.x<-120)p.x=W+80;if(p.x>W+120)p.x=-80;
+  });
+}
+function draw(){
+  var bg=x.createRadialGradient(W*0.5,H*0.4,0,W*0.5,H*0.4,Math.max(W,H)*0.7);
+  bg.addColorStop(0,'#0c1216');bg.addColorStop(1,'#06080a');
+  x.fillStyle=bg;x.fillRect(0,0,W,H);
+  if(mx>-100&&my>-100){
+    var g=x.createRadialGradient(mx,my,0,mx,my,200);
+    g.addColorStop(0,'rgba(42,157,143,0.06)');
+    g.addColorStop(0.5,'rgba(212,168,83,0.03)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=g;x.fillRect(mx-200,my-200,400,400);
+  }
+  var t=Date.now()*0.001;
+  for(var i=0;i<ps.length;i++)for(var j=i+1;j<ps.length;j++){
+    var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=dx*dx+dy*dy;
+    if(d<35000){
+      var a=(1-Math.sqrt(d)/187)*0.08;
+      a*=0.5+0.5*Math.sin(t*0.2+ps[i].phase+ps[j].phase);
+      x.beginPath();x.moveTo(ps[i].x,ps[i].y);x.lineTo(ps[j].x,ps[j].y);
+      x.strokeStyle='rgba(42,157,143,'+a+')';x.lineWidth=0.5;x.stroke();
+    }
+  }
+  ps.forEach(function(p){
+    x.save();
+    x.globalAlpha=p.alpha;
+    x.fillStyle='#2a9d8f';
+    x.font=p.size+'px "Noto Serif SC",serif';
+    x.textAlign='center';x.textBaseline='middle';
+    x.fillText(p.rune,p.x,p.y);
+    var g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*1.5);
+    g.addColorStop(0,'rgba(42,157,143,0.04)');
+    g.addColorStop(1,'rgba(42,157,143,0)');
+    x.fillStyle=g;x.beginPath();x.arc(p.x,p.y,p.size*1.5,0,6.28);x.fill();
+    x.restore();
+  });
+  requestAnimationFrame(loop);
+}
+init();loop();
+addEventListener('resize',function(){setTimeout(function(){init();},200);});
+})();
+</script>
+</body>
+</html>
